@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 19:07:38 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/23 16:04:37 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/11/24 17:56:17 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ char	*str_new_strline_and_free(char **str)
 	i = 0;
 	while ((*str)[i] && (*str)[i - 1] != '\n')
 		i++;
-	line = malloc(sizeof(char) * (i + 2));
+	line = malloc(sizeof(char) * (i + 1));
 	if (line == NULL)
 		return (NULL);
 	if (i == 0)

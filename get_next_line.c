@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 19:07:29 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/23 16:52:08 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/11/24 17:35:34 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,47 +97,47 @@ char	*get_next_line(int fd)
 	return (NULL);
 }
 
-// #include <fcntl.h>
-// int main(void)
-// {
-// 	int fd[4];
-// 	int i = 1;
+#include <fcntl.h>
+int main(void)
+{
+	int fd[4];
+	int i = 1;
 
-// 	fd[0] = open("file1", O_RDONLY);
-// 	fd[1] = open("file2", O_RDONLY);
-// 	fd[2] = open("file3", O_RDONLY);
-// 	fd[3] = open("file4", O_RDONLY);
-// 	__builtin_printf("\n1 line file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n2 lines file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("\n3 lines file3:\n");
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("\n2 lines file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n1 line file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("\n2 lines file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n1 line file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("\n2 lines file5:\n");
-// 	__builtin_printf("%s", get_next_line(-1));
-// 	__builtin_printf("%s", get_next_line(-1));
-// 	// __builtin_printf("\n2 l standard:\n");
-// 	// __builtin_printf("%s", get_next_line(0));
-// 	// __builtin_printf("%s", get_next_line(0));
-// 	// while (i <= 3000000)
-// 	// 	__builtin_printf("%d      %s", i++, get_next_line(fd[3]));
-// 	close(fd[0]);
-// 	close(fd[1]);
-// 	close(fd[2]);
-// 	close(fd[3]);
-// }
-//ne fonctionne pas avec des buffer plus grands que 1
-//cc -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c && ./a.out
+	fd[0] = open("file1", O_RDONLY);
+	fd[1] = open("file2", O_RDONLY);
+	fd[2] = open("file3", O_RDONLY);
+	fd[3] = open("file4", O_RDONLY);
+	__builtin_printf("\n1 line file1:\n");
+	__builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n2 lines file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n3 lines file3:\n");
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("\n2 lines file1:\n");
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n1 line file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n2 lines file1:\n");
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n1 line file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n2 lines file5:\n");
+	// __builtin_printf("%s", get_next_line(-1));
+	// __builtin_printf("%s", get_next_line(-1));
+	// __builtin_printf("\n2 l standard:\n");
+	// __builtin_printf("%s", get_next_line(0));
+	// __builtin_printf("%s", get_next_line(0));
+	// while (i <= 3000000)
+	// 	__builtin_printf("%d:      %s", i++, get_next_line(fd[3]));
+	close(fd[0]);
+	close(fd[1]);
+	close(fd[2]);
+	close(fd[3]);
+}
+// ne fonctionne pas avec des buffer plus grands que 1
+// cc -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c && ./a.out
