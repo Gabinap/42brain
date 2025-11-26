@@ -12,19 +12,22 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
 # include <stdlib.h>
 # include <unistd.h>
+
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
-typedef struct s_list_fd
-{
-	int					fd;
-	char				*contain;
-	struct s_list_fd	*next;
-}				t_list_fd;
-char	*ft_strjoin_and_free(char *s1, char *s2);
-char	*str_new_strline_and_free(char **str);
-char 	*get_next_line(int fd);
+# ifndef MAX_FD
+#  define MAX_FD 1024
+# endif
+
+char	*get_next_line(int fd);
+size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_strjoin_free(char *s1, char *s2);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+
 #endif

@@ -9,178 +9,120 @@
 /*   Updated: 2025/11/26 15:25:22 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "get_next_line.h"
 
-static t_list_fd	*new_actual(t_list_fd **head, int fd)
+static char	*ft_extract_line(char *stash)
 {
-	t_list_fd	*new_node;
-	t_list_fd	*current;
+	size_t	len;
 
-	if (*head == NULL)
-	{
-		*head = malloc(sizeof(t_list_fd));
-		if (*head == NULL)
-			return (NULL);
-		(*head)->fd = fd;
-		(*head)->contain = NULL;
-		(*head)->next = NULL;
-		return (*head);
-	}
-	current = *head;
-	while (current->next)
-		current = current->next;
-	new_node = malloc(sizeof(t_list_fd));
-	if (new_node == NULL)
+	if (!stash || !stash[0])
 		return (NULL);
-	current->next = new_node;
-	new_node->fd = fd;
-	new_node->contain = NULL;
-	new_node->next = NULL;
-	return (new_node);
+	len = 0;
+	while (stash[len] && stash[len] != '\n')
+		len++;
+	if (stash[len] == '\n')
+		len++;
+	return (ft_substr(stash, 0, len));
 }
 
-static char	*ft_strchr(const char *s, int c)
+static char	*ft_clean_stash(char *stash)
 {
-	int	i;
+	size_t	start;
+	char	*new_stash;
 
-	if (s == NULL)
+	if (!stash)
 		return (NULL);
-	i = 0;
-	c = (unsigned char)c;
-	while (s[i] != c && s[i])
-		i++;
-	if (s[i] == c)
-		return ((char *)&s[i]);
-	return (NULL);
+	start = 0;
+	while (stash[start] && stash[start] != '\n')
+		start++;
+	if (stash[start] == '\n')
+		start++;
+	if (!stash[start])
+	{
+		free(stash);
+		return (NULL);
+	}
+	new_stash = ft_substr(stash, start, ft_strlen(stash) - start);
+	free(stash);
+	return (new_stash);
 }
 
-static void	remove_fd_from_list(t_list_fd **head, int fd)
+static char	*ft_read_to_stash(int fd, char *stash)
 {
-	t_list_fd	*current;
-	t_list_fd	*prev;
-	t_list_fd	*to_free;
+	char	*buffer;
+	ssize_t	bytes_read;
 
-	if (head == NULL || *head == NULL)
-		return ;
-	current = *head;
-	prev = NULL;
-	while (current)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (free(stash), NULL);
+	bytes_read = 1;
+	while (!ft_strchr(stash, '\n') && bytes_read > 0)
 	{
-		if (current->fd == fd)
-		{
-			to_free = current;
-			if (prev == NULL)
-				*head = current->next;
-			else
-				prev->next = current->next;
-			if (to_free->contain)
-				free(to_free->contain);
-			free(to_free);
-			return ;
-		}
-		prev = current;
-		current = current->next;
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+			return (free(buffer), free(stash), NULL);
+		buffer[bytes_read] = '\0';
+		stash = ft_strjoin_free(stash, buffer);
+		if (!stash)
+			return (free(buffer), NULL);
 	}
+	free(buffer);
+	return (stash);
 }
 
 char	*get_next_line(int fd)
 {
-	static t_list_fd	*head = NULL;
-	t_list_fd			*actual;
-	char				*buffer;
-	int					byte_read;
+	static char	*stash[MAX_FD];
+	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
-	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (buffer == NULL)
+	stash[fd] = ft_read_to_stash(fd, stash[fd]);
+	if (!stash[fd])
 		return (NULL);
-	actual = head;
-	while (actual)
-	{
-		if (actual->fd == fd)
-			break ;
-		actual = actual->next;
-	}
-	if (actual == NULL)
-		actual = new_actual(&head, fd);
-	if (actual == NULL)
-	{
-		free(buffer);
-		return (NULL);
-	}
-	byte_read = 1;
-	while (!ft_strchr(actual->contain, '\n'))
-	{
-		byte_read = read(fd, buffer, BUFFER_SIZE);
-		if (byte_read == -1)
-		{
-			free(buffer);
-			free(actual->contain);
-			actual->contain = NULL;
-			return (NULL);
-		}
-		if (byte_read == 0)
-			break ;
-		buffer[byte_read] = '\0';
-		actual->contain = ft_strjoin_and_free(actual->contain, buffer);
-		if (actual->contain == NULL)
-		{
-			free(buffer);
-			return (NULL);
-		}
-	}
-	free(buffer);
-	if (actual->contain && actual->contain[0] != '\0')
-		return (str_new_strline_and_free(&(actual->contain)));
-	if (actual->contain)
-	{
-	    free(actual->contain);
-	    actual->contain = NULL;
-	}
-	if (byte_read == 0 && actual->contain == NULL)
-    	remove_fd_from_list(&head, fd);
-	return (NULL);
+	line = ft_extract_line(stash[fd]);
+	stash[fd] = ft_clean_stash(stash[fd]);
+	return (line);
 }
 
 // #include <fcntl.h>
 // int main(void)
 // {
 // 	int fd[4];
-// 	// int i = 1;
+// 	int i = 1;
+// 	char *line;
 
 // 	fd[0] = open("file1", O_RDONLY);
 // 	fd[1] = open("file2", O_RDONLY);
 // 	fd[2] = open("file3", O_RDONLY);
-// 	fd[3] = open("file4", O_RDONLY);
-// 	__builtin_printf("\n1 line file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n2 lines file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("\n3 lines file3:\n");
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("%s", get_next_line(fd[2]));
-// 	__builtin_printf("\n2 lines file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n1 line file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// 	__builtin_printf("\n2 lines file1:\n");
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("%s", get_next_line(fd[0]));
-// 	__builtin_printf("\n1 line file2:\n");
-// 	__builtin_printf("%s", get_next_line(fd[1]));
-// // 	// __builtin_printf("\n2 lines file5:\n");
-// // 	// __builtin_printf("%s", get_next_line(-1));
-// // 	// __builtin_printf("%s", get_next_line(-1));
-// // 	// __builtin_printf("\n2 l standard:\n");
-// // 	// __builtin_printf("%s", get_next_line(0));
-// // 	// __builtin_printf("%s", get_next_line(0));
-// // 	// while (i <= 3000000)
-// // 	// 	__builtin_printf("%d:      %s", i++, get_next_line(fd[3]));
+// 	fd[3] = open("bsb.txt", O_RDONLY);
+	// __builtin_printf("\n1 line file1:\n");
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n2 lines file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n3 lines file3:\n");
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("%s", get_next_line(fd[2]));
+	// __builtin_printf("\n2 lines file1:\n");
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n1 line file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n2 lines file1:\n");
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("%s", get_next_line(fd[0]));
+	// __builtin_printf("\n1 line file2:\n");
+	// __builtin_printf("%s", get_next_line(fd[1]));
+	// __builtin_printf("\n2 lines file5:\n");
+	// __builtin_printf("%s", get_next_line(-1));
+	// __builtin_printf("%s", get_next_line(-1));
+	// __builtin_printf("\n2 l standard:\n");
+	// __builtin_printf("%s", get_next_line(0));
+	// __builtin_printf("%s", get_next_line(0));
+// 	while (line = get_next_line(fd[3]))
+// 		__builtin_printf("%d:      %s", i++, line);
 // 	close(fd[0]);
 // 	close(fd[1]);
 // 	close(fd[2]);

@@ -12,130 +12,80 @@
 
 #include "get_next_line.h"
 
-static int	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	int	len;
+	size_t	len;
 
-	if (s == NULL)
+	if (!s)
 		return (0);
 	len = 0;
-	while (*s++)
+	while (s[len])
 		len++;
 	return (len);
 }
 
-static size_t	ft_strlcat(char *dest, const char *src, size_t size)
+char	*ft_strchr(const char *s, int c)
+{
+	if (!s)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == (char)c)
+			return ((char *)s);
+		s++;
+	}
+	if ((char)c == '\0')
+		return ((char *)s);
+	return (NULL);
+}
+
+static void	ft_memcpy(char *dst, const char *src, size_t n)
 {
 	size_t	i;
-	size_t	len_dest;
-	size_t	len_src;
 
-	len_dest = ft_strlen(dest);
-	len_src = ft_strlen(src);
 	i = 0;
-	if (size <= len_dest)
-		return (size + len_src);
-	while ((len_dest + i + 1 < size) && src[i])
+	while (i < n)
 	{
-		dest[i + len_dest] = src[i];
+		dst[i] = src[i];
 		i++;
 	}
-	dest[len_dest + i] = 0;
-	return (len_src + len_dest);
 }
 
-char	*ft_strjoin_and_free(char *s1, char *s2)
+char	*ft_strjoin_free(char *s1, char *s2)
 {
-	int		len_s1;
-	int		len_s2;
-	char	*str;
+	char	*result;
+	size_t	len1;
+	size_t	len2;
 
-	if (s2 == NULL)
+	if (!s2)
 		return (NULL);
-	if (s1 == NULL)
-	{
-		str = malloc(sizeof(char) * (ft_strlen(s2) + 1));
-		if (str == NULL)
-			return (NULL);
-		str[0] = '\0';
-		ft_strlcat(str, s2, ft_strlen(s2) + 1);
-		return (str);
-	}
-	len_s1 = ft_strlen(s1);
-	len_s2 = ft_strlen(s2);
-	str = (char *)malloc((sizeof(char)) * (len_s1 + len_s2 + 1));
-	if (str == NULL)
-	{
-		free(s1);
-		return (NULL);
-	}
-	str[0] = '\0';
-	ft_strlcat(str, s1, len_s1 + 1);
-	ft_strlcat(str, s2, len_s2 + len_s1 + 1);
-	free((void *)s1);
-	return (str);
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	result = malloc(len1 + len2 + 1);
+	if (!result)
+		return (free(s1), NULL);
+	ft_memcpy(result, s1, len1);
+	ft_memcpy(result + len1, s2, len2);
+	result[len1 + len2] = '\0';
+	return (free(s1), result);
 }
 
-static char	*keep_str_withoutline_and_returnline(char **str, char **line, int i)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*temp;
-	int		j;
+	char	*sub;
+	size_t	s_len;
 
-	if ((*str)[i] == '\n')
-	{
-		temp = malloc(sizeof(char) * (ft_strlen(&(*str)[i + 1]) + 1));
-		if (temp == NULL)
-		{
-			free(*line);
-			free(*str);
-			*str = NULL;
-			return (NULL);
-		}
-		j = -1;
-		while ((*str)[i + j++ + 1])
-			temp[j] = (*str)[i + j + 1];
-		temp[j] = '\0';
-		free(*str);
-		*str = temp;
-	}
-	else
-	{
-		free(*str);
-		*str = NULL;
-	}
-	return (*line);
-}
-
-//may be change the return who are not opti
-char	*str_new_strline_and_free(char **str)
-{
-	char	*line;
-	int		i;
-	int		j;
-
-	if (str == NULL || *str == NULL)
+	if (!s)
 		return (NULL);
-	i = 0;
-	while ((*str)[i] && (*str)[i] != '\n')
-		i++;
-	if ((*str)[i] == '\n')
-		i++;
-	line = malloc(sizeof(char) * (i + 1));
-	if (line == NULL)
+	s_len = ft_strlen(s);
+	if (start >= s_len)
+		len = 0;
+	else if (len > s_len - start)
+		len = s_len - start;
+	sub = malloc(len + 1);
+	if (!sub)
 		return (NULL);
-	if (i == 0)
-	{
-		free(line);
-		free(*str);
-		*str = NULL;
-		return (NULL);
-	}
-	line[i] = '\0';
-	j = 0;
-	while (j < i)
-	{
-	    line[j] = (*str)[j];
-	    j++;
-	}
-	return (keep_str_withoutline_and_returnline(str, &line, i));
+	ft_memcpy(sub, s + start, len);
+	sub[len] = '\0';
+	return (sub);
 }
