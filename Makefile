@@ -9,20 +9,20 @@ SRCS = \
 		get_next_line_utils.c \
 
 
-BONUS_SRCS = \
-		get_next_line_bonus.c \
-		get_next_line_utils_bonus.c \
+# BONUS_SRCS = \
+# 		get_next_line_bonus.c \
+# 		get_next_line_utils_bonus.c \
 
 OBJS = $(SRCS:.c=.o)
-BONUS_OBJS = $(BONUS_SRCS:.c=.o)
+# BONUS_OBJS = $(BONUS_SRCS:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 		$(AR) $(NAME) $(OBJS)
 
-bonus:
-		@make OBJS="$(OBJS) $(BONUS_OBJS)" --no-print-directory
+# bonus:
+# 		@make OBJS="$(OBJS) $(BONUS_OBJS)" --no-print-directory
 
 #maybe change because of _bonus
 %.o: %.c get_next_line.h

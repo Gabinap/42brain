@@ -1,6 +1,6 @@
-# Test files
 file*
 *.txt
 test*
 a.out
 *.o
+.*

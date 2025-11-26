@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 19:07:38 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/24 17:56:17 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/11/26 15:21:12 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,14 @@ static char	*keep_str_withoutline_and_returnline(char **str, char **line, int i)
 		if (temp == NULL)
 		{
 			free(*line);
+			free(*str);
+			*str = NULL;
 			return (NULL);
 		}
 		j = -1;
 		while ((*str)[i + j++ + 1])
 			temp[j] = (*str)[i + j + 1];
+		temp[j] = '\0';
 		free(*str);
 		*str = temp;
 	}
@@ -113,19 +116,26 @@ char	*str_new_strline_and_free(char **str)
 	if (str == NULL || *str == NULL)
 		return (NULL);
 	i = 0;
-	while ((*str)[i] && (*str)[i - 1] != '\n')
+	while ((*str)[i] && (*str)[i] != '\n')
+		i++;
+	if ((*str)[i] == '\n')
 		i++;
 	line = malloc(sizeof(char) * (i + 1));
 	if (line == NULL)
 		return (NULL);
 	if (i == 0)
-		return (NULL);
-	line[i] = '\0';
-	j = i - 1;
-	while (j >= 0)
 	{
-		line[j] = (*str)[j];
-		j--;
+		free(line);
+		free(*str);
+		*str = NULL;
+		return (NULL);
+	}
+	line[i] = '\0';
+	j = 0;
+	while (j < i)
+	{
+	    line[j] = (*str)[j];
+	    j++;
 	}
 	return (keep_str_withoutline_and_returnline(str, &line, i));
 }
