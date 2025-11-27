@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 19:07:38 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/26 15:21:12 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:18:45 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ static void	ft_memcpy(char *dst, const char *src, size_t n)
 {
 	size_t	i;
 
+	if (n == 0 || !dst || !src)
+		return ;
 	i = 0;
 	while (i < n)
 	{
@@ -79,7 +81,12 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	s_len = ft_strlen(s);
 	if (start >= s_len)
-		len = 0;
+	{
+	    sub = malloc(1);
+	    if (sub)
+	        sub[0] = '\0';
+	    return (sub);
+	}
 	else if (len > s_len - start)
 		len = s_len - start;
 	sub = malloc(len + 1);

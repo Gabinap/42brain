@@ -6,9 +6,10 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 19:07:29 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/26 15:25:22 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/11/27 20:18:47 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line.h"
 
 static char	*ft_extract_line(char *stash)
@@ -61,13 +62,14 @@ static char	*ft_read_to_stash(int fd, char *stash)
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 			return (free(buffer), free(stash), NULL);
+		if (bytes_read == 0)
+			break ;
 		buffer[bytes_read] = '\0';
 		stash = ft_strjoin_free(stash, buffer);
 		if (!stash)
 			return (free(buffer), NULL);
 	}
-	free(buffer);
-	return (stash);
+	return (free(buffer), stash);
 }
 
 char	*get_next_line(int fd)
@@ -96,33 +98,34 @@ char	*get_next_line(int fd)
 // 	fd[1] = open("file2", O_RDONLY);
 // 	fd[2] = open("file3", O_RDONLY);
 // 	fd[3] = open("bsb.txt", O_RDONLY);
-	// __builtin_printf("\n1 line file1:\n");
-	// __builtin_printf("%s", get_next_line(fd[0]));
-	// __builtin_printf("\n2 lines file2:\n");
-	// __builtin_printf("%s", get_next_line(fd[1]));
-	// __builtin_printf("%s", get_next_line(fd[1]));
-	// __builtin_printf("\n3 lines file3:\n");
-	// __builtin_printf("%s", get_next_line(fd[2]));
-	// __builtin_printf("%s", get_next_line(fd[2]));
-	// __builtin_printf("%s", get_next_line(fd[2]));
-	// __builtin_printf("\n2 lines file1:\n");
-	// __builtin_printf("%s", get_next_line(fd[0]));
-	// __builtin_printf("%s", get_next_line(fd[0]));
-	// __builtin_printf("\n1 line file2:\n");
-	// __builtin_printf("%s", get_next_line(fd[1]));
-	// __builtin_printf("\n2 lines file1:\n");
-	// __builtin_printf("%s", get_next_line(fd[0]));
-	// __builtin_printf("%s", get_next_line(fd[0]));
-	// __builtin_printf("\n1 line file2:\n");
-	// __builtin_printf("%s", get_next_line(fd[1]));
-	// __builtin_printf("\n2 lines file5:\n");
-	// __builtin_printf("%s", get_next_line(-1));
-	// __builtin_printf("%s", get_next_line(-1));
-	// __builtin_printf("\n2 l standard:\n");
-	// __builtin_printf("%s", get_next_line(0));
-	// __builtin_printf("%s", get_next_line(0));
-// 	while (line = get_next_line(fd[3]))
-// 		__builtin_printf("%d:      %s", i++, line);
+// 	__builtin_printf("\n1 line file1:\n");
+// 	__builtin_printf("%s", get_next_line(fd[0]));
+// 	__builtin_printf("\n2 lines file2:\n");
+// 	__builtin_printf("%s", get_next_line(fd[1]));
+// 	__builtin_printf("%s", get_next_line(fd[1]));
+// 	__builtin_printf("\n3 lines file3:\n");
+// 	__builtin_printf("%s", get_next_line(fd[2]));
+// 	__builtin_printf("%s", get_next_line(fd[2]));
+// 	__builtin_printf("%s", get_next_line(fd[2]));
+// 	__builtin_printf("\n2 lines file1:\n");
+// 	__builtin_printf("%s", get_next_line(fd[0]));
+// 	__builtin_printf("%s", get_next_line(fd[0]));
+// 	__builtin_printf("\n1 line file2:\n");
+// 	__builtin_printf("%s", get_next_line(fd[1]));
+// 	__builtin_printf("\n2 lines file1:\n");
+// 	__builtin_printf("%s", get_next_line(fd[0]));
+// 	__builtin_printf("%s", get_next_line(fd[0]));
+// 	__builtin_printf("\n2 line file2:\n");
+// 	__builtin_printf("%s", get_next_line(fd[1]));
+// 	__builtin_printf("%s", get_next_line(fd[1]));
+// 	// __builtin_printf("\n2 lines file5:\n");
+// 	// __builtin_printf("%s", get_next_line(-1));
+// 	// __builtin_printf("%s", get_next_line(-1));
+// 	// __builtin_printf("\n2 l standard:\n");
+// 	// __builtin_printf("%s", get_next_line(0));
+// 	// __builtin_printf("%s", get_next_line(0));
+// // 	while (line = get_next_line(fd[3]))
+// // 		__builtin_printf("%d:      %s", i++, line);
 // 	close(fd[0]);
 // 	close(fd[1]);
 // 	close(fd[2]);
