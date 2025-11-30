@@ -1,2 +1,6 @@
-a.*
-*test*
+file*
+*.txt
+test*
+a.out
+*.o
+.*
