@@ -4,3 +4,9 @@ test*
 a.out
 *.o
 .*
+*/file*
+*/*.txt
+*/test*
+*/a.out
+*/*.o
+*/.*
