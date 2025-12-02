@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/16 19:07:29 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/27 20:18:47 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/02 11:30:57 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+// cc -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c && ./a.out
 // #include <fcntl.h>
 // int main(void)
 // {
@@ -131,6 +132,3 @@ char	*get_next_line(int fd)
 // 	close(fd[2]);
 // 	close(fd[3]);
 // }
-
-// ne fonctionne pas avec des buffer plus grands que 1 & memleak
-// cc -D BUFFER_SIZE=2 get_next_line.c get_next_line_utils.c && ./a.out

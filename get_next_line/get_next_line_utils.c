@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/16 19:07:38 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/11/27 20:18:45 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/02 11:27:11 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	s_len = ft_strlen(s);
 	if (start >= s_len)
 	{
-	    sub = malloc(1);
-	    if (sub)
-	        sub[0] = '\0';
-	    return (sub);
+		sub = malloc(1);
+		if (sub)
+			sub[0] = '\0';
+		return (sub);
 	}
 	else if (len > s_len - start)
 		len = s_len - start;
