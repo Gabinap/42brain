@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:09 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:51:10 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 08:58:36 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ int	print_hex_format(t_format *fmt, char *hex, unsigned int num)
 	zeros = 0;
 	if (fmt->precision > len)
 		zeros = fmt->precision - len;
+	if (fmt->zero)
+		zeros = fmt->width - prefix_len - len;
 	spaces = 0;
 	if (fmt->width > (prefix_len + zeros + len))
 		spaces = fmt->width - (prefix_len + zeros + len);
 	count = 0;
-	if (!fmt->minus && !fmt->zero)
+	if (!fmt->minus)
 		count += print_padding(spaces, ' ');
 	count += print_prefix(fmt->specifier == 'X', num, fmt);
-	if (!fmt->minus && fmt->zero && fmt->precision < 0)
-		count += print_padding(spaces, '0');
 	count += print_padding(zeros, '0');
 	count += write(1, hex, len);
 	if (fmt->minus)

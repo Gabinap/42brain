@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:00 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:51:00 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 07:28:56 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ typedef struct s_format
 
 int			ft_printf(const char *format, ...);
 const char	*parse_format(const char *s, t_format *fmt);
-int			handle_format(t_format *fmt, va_list args);
 
 int			handle_char(t_format *fmt, va_list args);
 int			handle_string(t_format *fmt, va_list args);

@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:50:56 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:50:57 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 13:56:37 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,15 @@ int	handle_string(t_format *fmt, va_list args)
 	char	*s;
 	int		len;
 	int		count;
+	int		is_s;
 
+	is_s = 1;
 	s = va_arg(args, char *);
 	if (!s)
+		is_s = 0;
+	if (!s && (fmt->precision < 6 && fmt->precision > 0))
+		s = "";
+	else if (!s)
 		s = "(null)";
 	len = get_print_len(s, fmt);
 	count = 0;

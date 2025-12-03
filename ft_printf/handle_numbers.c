@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:04 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:51:05 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 07:15:00 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,8 @@ int	handle_integer(t_format *fmt, va_list args)
 	num_str = ft_itoa(num);
 	if (!num_str)
 		return (0);
-	count = print_number(fmt, num_str, num < 0);
+	count = 0;
+	count += print_number(fmt, num_str, num < 0);
 	free(num_str);
 	return (count);
 }

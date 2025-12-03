@@ -6,13 +6,13 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:07 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:51:08 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 09:20:13 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-void	init_format(t_format *fmt)
+static void	init_format(t_format *fmt)
 {
 	fmt->width = 0;
 	fmt->precision = -1;
@@ -24,7 +24,7 @@ void	init_format(t_format *fmt)
 	fmt->specifier = 0;
 }
 
-const char	*parse_flags(const char *s, t_format *fmt)
+static const char	*parse_flags(const char *s, t_format *fmt)
 {
 	while (*s == '-' || *s == '0' || *s == '#' || *s == '+' || *s == ' ')
 	{
@@ -43,7 +43,7 @@ const char	*parse_flags(const char *s, t_format *fmt)
 	return (s);
 }
 
-const char	*parse_width(const char *s, t_format *fmt)
+static const char	*parse_width(const char *s, t_format *fmt)
 {
 	fmt->width = 0;
 	while (*s >= '0' && *s <= '9')
@@ -54,7 +54,7 @@ const char	*parse_width(const char *s, t_format *fmt)
 	return (s);
 }
 
-const char	*parse_precision(const char *s, t_format *fmt)
+static const char	*parse_precision(const char *s, t_format *fmt)
 {
 	if (*s == '.')
 	{
@@ -77,6 +77,10 @@ const char	*parse_format(const char *s, t_format *fmt)
 	s = parse_width(s, fmt);
 	s = parse_precision(s, fmt);
 	fmt->specifier = *s;
+	if (fmt->precision > 0)
+	{
+		fmt->zero = 0;
+	}
 	if (fmt->minus)
 		fmt->zero = 0;
 	if (fmt->plus)

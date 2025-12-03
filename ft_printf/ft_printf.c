@@ -6,13 +6,13 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:50:51 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:50:52 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:29:44 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	handle_format(t_format *fmt, va_list args)
+static int	handle_format(t_format *fmt, va_list args)
 {
 	if (fmt->specifier == 'c')
 		return (handle_char(fmt, args));
@@ -55,3 +55,15 @@ int	ft_printf(const char *format, ...)
 	va_end(args);
 	return (count);
 }
+
+// int main(void)
+// {
+// // 	ft_printf("count=%-5d", ft_printf("%%"));
+// // 	__builtin_printf("count=%-5d", __builtin_printf("%%"));
+// // 	ft_printf("\ncount=%-5d", ft_printf("%-100.10s", "Hello world."));
+// // 	__builtin_printf("\ncount=%-5d", __builtin_printf("%-100.10s", "Hello world."));
+// // 	ft_printf("\ncount=%-5d", ft_printf("%-10.100s", "Hello world."));
+// // 	__builtin_printf("count=%-5d", __builtin_printf("%-10.100s", "Hello world."));
+// 	ft_printf(".%-s.", "s");
+// 	__builtin_printf("\n.%-s.", "s");
+// }
