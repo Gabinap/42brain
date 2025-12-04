@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:50:51 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/03 12:29:44 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/04 07:11:29 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ int	ft_printf(const char *format, ...)
 
 // int main(void)
 // {
-// // 	ft_printf("count=%-5d", ft_printf("%%"));
-// // 	__builtin_printf("count=%-5d", __builtin_printf("%%"));
-// // 	ft_printf("\ncount=%-5d", ft_printf("%-100.10s", "Hello world."));
-// // 	__builtin_printf("\ncount=%-5d", __builtin_printf("%-100.10s", "Hello world."));
-// // 	ft_printf("\ncount=%-5d", ft_printf("%-10.100s", "Hello world."));
-// // 	__builtin_printf("count=%-5d", __builtin_printf("%-10.100s", "Hello world."));
+// 	ft_printf("count=%-5d", ft_printf("%%"));
+// 	__builtin_printf("count=%-5d", __builtin_printf("%%"));
+// 	ft_printf("\ncount=%-5d", ft_printf("%-100.10s", "Hello world."));
+// 	__builtin_printf("\ncount=%-5d", __builtin_printf("%-100.10s", "Hello world.
+//	"));
+// 	ft_printf("\ncount=%-5d", ft_printf("%-10.100s", "Hello world."));
+// 	__builtin_printf("count=%-5d", __builtin_printf("%-10.100s", "Hello world.
+//	"));
 // 	ft_printf(".%-s.", "s");
 // 	__builtin_printf("\n.%-s.", "s");
+// 	ft_printf("%197c%p%013.i%--147.185x%-1c" ,7,(void*)18229185041105221837lu,
+//	-1488496170,703835510u,120);
+// 	__builtin_printf("\n%197c%12p%013.i%--147.185x%-1c" ,7,(void*)1822918504110
+//	5221837lu,-1488496170,703835510u,120);
 // }

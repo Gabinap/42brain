@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:09 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/03 08:58:36 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/04 07:35:42 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,18 @@ static int	print_prefix(int uppercase, unsigned int num, t_format *fmt)
 		return (write(1, "0x", 2));
 }
 
+static int	print_hex_format_init_zeros(t_format *fmt, int len, int prefix_len)
+{
+	int	zeros;
+
+	zeros = 0;
+	if (fmt->precision > len)
+		zeros = fmt->precision - len;
+	if (fmt->zero)
+		zeros = fmt->width - prefix_len - len;
+	return (zeros);
+}
+
 int	print_hex_format(t_format *fmt, char *hex, unsigned int num)
 {
 	int	len;
@@ -34,11 +46,7 @@ int	print_hex_format(t_format *fmt, char *hex, unsigned int num)
 	prefix_len = 0;
 	if (fmt->hash && num != 0)
 		prefix_len = 2;
-	zeros = 0;
-	if (fmt->precision > len)
-		zeros = fmt->precision - len;
-	if (fmt->zero)
-		zeros = fmt->width - prefix_len - len;
+	zeros = print_hex_format_init_zeros(fmt, len, prefix_len);
 	spaces = 0;
 	if (fmt->width > (prefix_len + zeros + len))
 		spaces = fmt->width - (prefix_len + zeros + len);

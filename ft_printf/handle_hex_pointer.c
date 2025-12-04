@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:03 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/03 09:35:01 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/04 07:14:32 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ int	handle_hex(t_format *fmt, va_list args, int uppercase)
 	return (free(hex_str), count);
 }
 
+static int	handler_pointer_no_arg(int count, t_format *fmt)
+{
+	if (fmt->width > 5 && !fmt->minus)
+		count += print_padding(fmt->width - 5, ' ');
+	count += write(1, "(nil)", 5);
+	if (fmt->width > 5 && fmt->minus)
+		count += print_padding(fmt->width - 5, ' ');
+	return (count);
+}
+
 int	handle_pointer(t_format *fmt, va_list args)
 {
 	void			*ptr;
@@ -44,14 +54,7 @@ int	handle_pointer(t_format *fmt, va_list args)
 	addr = (unsigned long)ptr;
 	count = 0;
 	if (!ptr)
-	{
-		if (fmt->width > 5 && !fmt->minus)
-			count += print_padding(fmt->width - 5, ' ');
-		count += write(1, "(nil)", 5);
-		if (fmt->width > 5 && fmt->minus)
-			count += print_padding(fmt->width - 5, ' ');
-		return (count);
-	}
+		return (handler_pointer_no_arg(count, fmt));
 	hex_str = ft_xtoa(addr, 0);
 	if (!hex_str)
 		return (count);

@@ -6,7 +6,7 @@
 /*   By: gagulhon <gagulhon@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 10:51:10 by gagulhon          #+#    #+#             */
-/*   Updated: 2025/12/02 10:51:11 by gagulhon         ###   ########.fr       */
+/*   Updated: 2025/12/04 08:06:33 by gagulhon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,19 @@ static int	calculate_padding(t_format *fmt, int len, int sign, int zeros)
 	return (0);
 }
 
+static int	print_number_init_len(char **num, int is_negative)
+{
+	int	len;
+
+	len = ft_strlen(*num);
+	if (is_negative && *(num[0]) == '-')
+	{
+		(*num)++;
+		len--;
+	}
+	return (len);
+}
+
 int	print_number(t_format *fmt, char *num, int is_negative)
 {
 	int	len;
@@ -47,19 +60,14 @@ int	print_number(t_format *fmt, char *num, int is_negative)
 	int	spaces;
 	int	count;
 
-	len = ft_strlen(num);
-	if (is_negative && num[0] == '-')
-	{
-		num++;
-		len--;
-	}
+	len = print_number_init_len(&num, is_negative);
 	sign_len = get_sign_len(fmt, is_negative);
 	zeros = 0;
 	if (fmt->precision > len)
 		zeros = fmt->precision - len;
 	spaces = calculate_padding(fmt, len, sign_len, zeros);
 	count = 0;
-	if (!fmt->minus && !fmt->zero)
+	if (!fmt->minus && (!fmt->zero || fmt->precision >= 0))
 		count += print_padding(spaces, ' ');
 	print_sign(fmt, is_negative, &count);
 	if (!fmt->minus && fmt->zero && fmt->precision < 0)
